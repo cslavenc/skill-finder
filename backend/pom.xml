@@ -202,8 +202,8 @@
 								<performValidation>true</performValidation>
 								<useOptional>true</useOptional>
 								<serializableModel>true</serializableModel>
-								<apiPackage>ch.sbb.globos.beto.api.domain</apiPackage>
-								<modelPackage>ch.sbb.globos.beto.api.domain.dto</modelPackage>
+								<apiPackage>ch.github.cslavenc.skillfinder.api.domain</apiPackage>
+								<modelPackage>ch.github.cslavenc.skillfinder.api.domain.dto</modelPackage>
 								<useTags>true</useTags>
 								<sourceFolder>src/main/java/</sourceFolder>
 								<interfaceOnly>true</interfaceOnly>
