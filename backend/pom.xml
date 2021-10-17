@@ -158,7 +158,117 @@
 						</exclude>
 					</excludes>
 				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>build-info</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
+			<!--<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<runOrder>alphabetical</runOrder>
+					<includes>
+						<include>**/Test*.java</include>
+						<include>**/*Test.java</include>
+						<include>**/*Tests.java</include>
+						<include>**/*TestCase.java</include>
+						<include>**/*IT.java</include>
+					</includes>
+				</configuration>
+			</plugin>-->
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>${org.openapitools.openapi-generator-maven-plugin}</version>
+				<executions>
+					<execution>
+						<id>backend-api</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/openapi.yaml
+							</inputSpec>
+							<ignoreFileOverride>.openapi-generator-ignore</ignoreFileOverride>
+							<generatorName>spring</generatorName>
+							<typeMappings>
+								<typeMapping>LocalDate=OffsetDateTime</typeMapping>
+							</typeMappings>
+							<importMappings>
+								<param>java.time.LocalDate=java.time.OffsetDateTime</param>
+							</importMappings>
+							<configOptions>
+								<dateLibrary>java8</dateLibrary>
+								<useBeanValidation>true</useBeanValidation>
+								<performValidation>true</performValidation>
+								<useOptional>true</useOptional>
+								<serializableModel>true</serializableModel>
+								<apiPackage>ch.sbb.globos.beto.api.domain</apiPackage>
+								<modelPackage>ch.sbb.globos.beto.api.domain.dto</modelPackage>
+								<useTags>true</useTags>
+								<sourceFolder>src/main/java/</sourceFolder>
+								<interfaceOnly>true</interfaceOnly>
+								<skipDefaultInterface>true</skipDefaultInterface>
+								<additionalModelTypeAnnotations>
+									@lombok.AllArgsConstructor
+									@lombok.NoArgsConstructor
+									@lombok.Builder
+								</additionalModelTypeAnnotations>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${org.projectlombok.version}</version>
+						</path>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${org.mapstruct.version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+
+			<!-- Copy the frontend distribution into resources folder.-->
+			<!-- requires adaption: no need for languages -->
+			<!--<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources-de</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/classes/META-INF/resources/de
+							</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.parent.basedir}/beto-frontend/dist/de-CH</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>-->
 		</plugins>
 	</build>
 

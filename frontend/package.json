@@ -8,7 +8,7 @@
     "build": "ng run beto-ui:ngsscbuild:production",
     "test": "ng test -c ci",
     "lint": "npx prettier --write . && ng lint",
-    "generate:api": "openapi-generator-cli generate -g typescript-angular -i ../beto-backend/src/main/resources/openapi.yaml -o generated/openapi",
+    "generate:api": "openapi-generator-cli generate -g typescript-angular -i ../backend/src/main/resources/openapi.yaml -o generated/openapi",
     "resolve-audit": "resolve-audit --production --audit-level=high"
   },
   "name": "skillfinder-ui",
