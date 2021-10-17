@@ -1,0 +1,121 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v1
+servers:
+  - url: http://localhost:8080
+    description: Generated server url for local development
+tags:
+  - name: employee
+    description: employee API
+
+paths:
+  /v1/employee:
+    get:
+      operationId: getEmployee
+      parameters:
+        - in: query
+          name: search
+          required: true
+          schema:
+            type: string
+            pattern: ^(?!\s*$).+  # prevent empty search string
+          description: Text to search for an employee
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeResponseDto'
+          description: successful operation
+        "500":
+          description: Unexpected Error
+      summary: Get employees
+      tags:
+        - employee
+
+components:
+  schemas:
+    StatusEnum:
+      type: string
+      description: Employment status
+      enum:
+        - ACTIVE
+        - RETIRED
+        - RESIGNED
+      example: ACTIVE
+
+    EmployeeDto:
+      type: object
+      description: Ein Fall
+      properties:
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+          description: Employment status
+          example: ACTIVE
+        firstname:
+          type: string
+          pattern: ^(?!\s*$).+  # disable empty names
+          description: firstname of employee
+          example: Lindsey
+        lastname:
+          type: string
+          pattern: ^(?!\s*$).+  # disable empty names
+          description: firstname of employee
+          example: Stirling
+        startDate:
+          type: string
+          format: yyyy-mm-dd
+          description: date of joining the company
+          example: 2021-05-26
+        endDate:
+          type: string
+          format: yyyy-mm-dd
+          description: date of leaving the company
+          example: 2021-05-26
+        version:
+          type: integer
+          format: int64
+          description: Version für Optimistic Locking
+      required:
+        - firstname
+        - lastname
+        - startDatum
+        - endDatum
+        - status
+
+    EmployeeResponseDto:
+      allOf:
+        - $ref: '#/components/schemas/EmployeeDto'
+        - type: object
+          description: Employee Response object
+          properties:
+            id:
+              type: string
+              format: uuid
+              description: Der universal unique identifier für einen Fall im UUID Format
+            updatedAt:
+              type: string
+              format: date
+              description: Datumszeit der letzten Änderung
+              example: 2021-08-20T09:08:48.637442
+          required:
+            - id
+            - updatedAt
+      type: object
+
+    EmployeesResponseDto:
+      type: object
+      description: Response object for multiple employees
+      properties:
+        count:
+          type: integer
+          format: int64
+          description: Number of all employees
+          example: 10000
+        employees:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmployeeResponseDto'
+      required:
+        - count
